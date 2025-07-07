@@ -22,6 +22,41 @@ Safer enables submitting complex transactions without the need of intermediaries
 - Run `make tx` and follow the steps to create a Safe transaction using [create-safe-tx](https://github.com/morpho-labs/create-safe-tx); OR
 - Put the transaction's raw data in `data/tx.json`
 
+### Create a batch
+
+To create a batch of multiple transactions that will be executed atomically:
+
+1. Add the `MULTI_SEND_ADDR` environment variable to your `.env` file with the MultiSend contract address for your Safe version (e.g., `MULTI_SEND_ADDR=0x38869bf66a61cF6bDB996A6aE40D5853Fd43B526` for Safe 1.3.0 on Sepolia)
+2. Create a `data/batch.json` file with an array of transaction objects
+3. Run `make prepare-batch` to encode the batch into a single Safe transaction
+
+Each transaction in the batch should follow this format:
+
+```json
+[
+    {
+        "operation": 0,
+        "to": "0x0000000000000000000000000000000000000000",
+        "value": "0",
+        "data": "0x"
+    },
+    {
+        "operation": 1,
+        "to": "0x0000000000000000000000000000000000000000", 
+        "value": "1000000000000000000",
+        "data": "0x1234567890abcdef"
+    }
+]
+```
+
+Where:
+- `operation`: `0` for a call, `1` for a delegatecall
+- `to`: target contract address
+- `value`: amount of ETH to send (as a string)
+- `data`: transaction data (must start with `0x`)
+
+The batch will be encoded using Safe's MultiSend contract and saved to `data/tx.json` for signing and execution.
+
 ### Sign a Safe tx
 
 1. To sign the data with a Ledger, run: `make sign:ledger`

@@ -9,6 +9,9 @@ install: clean
 	foundryup
 	forge install
 
+prepare-batch:
+	forge script script/PrepareMultiSendTx.s.sol
+
 tx:
 	npx create-safe-tx
 	mv tx.json data/tx.json
