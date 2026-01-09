@@ -10,7 +10,8 @@ install: clean
 	forge install
 
 prepare-batch:
-	forge script script/PrepareMultiSendTx.s.sol
+	export BATCH_LENGTH=$$(jq length data/batch.json) && \
+    forge script script/PrepareMultiSendTx.s.sol
 
 tx:
 	npx create-safe-tx

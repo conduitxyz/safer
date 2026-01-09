@@ -40,7 +40,7 @@ contract PrepareMultiSendTx is Script {
         
         // Read the batch file
         string memory json = vm.readFile(BATCH_FILE);
-        uint batchLength = json.readUint("$.length");
+        uint batchLength = vm.envUint("BATCH_LENGTH");
         
         bytes memory encodedTxs;
         
